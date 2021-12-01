@@ -10,13 +10,13 @@ app.use("/api/books", require("./routes/book"));
 
 app.use("*", async(req, res, next) => {
     next(new CustomError(`${req.originalUrl} not found`, 404));
-})
+});
 
 app.use(require("./middlewares/errorhandler"));
 
-
-const port = process.env.PORT || 8000; 
+const port = process.env.PORT || 8000;
+ 
 app.listen(port, (error)=>{
     if(error) console.log(error)
     console.log("listening to port", port);
-})
+});

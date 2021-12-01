@@ -15,8 +15,17 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type:"Boolean",
         default: false
-    }
+    },
+    passwordChangedAt: Date
 });
+
+userSchema.methods.changedPassword = function(timestamp){
+    if(this.passwordChangedAt){
+        let formattedTimeStamp = parseInt(this.passwordChanged.getTime()/1000,10);
+        return formattedTimeStamp > timestamp;
+    }    
+    return false;
+}
 
 const User = mongoose.model("User", userSchema);
 
