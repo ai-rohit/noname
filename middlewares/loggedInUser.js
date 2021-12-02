@@ -11,7 +11,7 @@ async function loggedInUser(req,res,next){
     }
     const decoded = jwt.verifyJWT(token,process.env.JWT_KEY);
     console.log(decoded);
-    const freshUser = await User.findById(decoded.userId);
+    const freshUser = await User.findById(decoded.userId,{password:0});
     if(!freshUser){
         return next(new CustomError("The user no longer exist",401))
     }

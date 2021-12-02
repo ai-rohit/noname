@@ -7,6 +7,7 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/books", require("./routes/book"));
+app.use("/api/users", require("./routes/user"));
 
 app.use("*", async(req, res, next) => {
     next(new CustomError(`${req.originalUrl} not found`, 404));
