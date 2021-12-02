@@ -27,6 +27,14 @@ userSchema.methods.changedPassword = function(timestamp){
     return false;
 }
 
+userSchema.statics.userWithIdPresent = async function(userId){
+    const user = await User.findById(userId);
+    if(!user){
+        return false;
+    }
+    return true;
+}
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
