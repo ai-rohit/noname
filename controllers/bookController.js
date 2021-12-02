@@ -44,5 +44,32 @@ module.exports = {
                 book:req.book
             }
         })
+    },
+    editBook: async(req, res, next)=>{
+        if(req.body.title){
+            req.book.title = req.body.title
+        }
+        if(req.body.description){
+            req.book.description = req.body.description
+        }
+        if(req.body.trackStock){
+            req.book.trackStock = req.body.trackStock
+        }
+        if(req.body.inStock){
+            req.book.inStock = req.body.inStock
+        }
+        if(req.body.isSold){
+            req.book.isSold = req.body.isSold
+        }
+        if(req.body.status){
+            req.book.status = req.body.status
+        }
+        const editedResult = await req.book.save();
+        return res.status(200).json({
+            status:"success",
+            data:{
+                book:editedResult
+            }
+        })
     }
 }

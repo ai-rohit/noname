@@ -13,6 +13,7 @@ router.post("/", loggedInUser ,wrapAsync(bookController.postBooks));
 const singleBookRouter = new express.Router();
 router.use("/:bookId", bookIdValidator(), validationResult, singleBookRouter);
 singleBookRouter.get("/", bookController.getSingleBook);
+singleBookRouter.put("/", wrapAsync(bookController.editBook));
 
 const userBooksRouter = new express.Router();
 router.use("/:postedBy",userBookValidator(),validationResult,userBooksRouter);
