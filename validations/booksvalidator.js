@@ -13,5 +13,17 @@ module.exports = {
                 return Promise.reject("User with the id doesnt exist")
             })
         ]
+    },
+    bookIdValidator: function(){
+        return [
+            param("bookId").custom(async(value, {req})=>{
+                const book = await Book.findById(value);
+                if(!book){
+                    return Promise.reject("Book with given id doesnt exist");
+                }
+                req.book = book;
+                return Promise.resolve();
+            })
+        ]
     }
 }

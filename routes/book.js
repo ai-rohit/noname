@@ -3,14 +3,18 @@ const {bookController} = require("../controllers");
 const {wrapAsync} = require("../helpers");
 const loggedInUser = require("../middlewares/loggedInUser");
 const validationResult = require("../middlewares/validationResult");
-const {userBookValidator} = require("../validations/booksvalidator");
+const {userBookValidator, bookIdValidator} = require("../validations/booksvalidator");
 
 const router = express.Router();
 
 router.get("/",loggedInUser,wrapAsync(bookController.getBooks));
 router.post("/", loggedInUser ,wrapAsync(bookController.postBooks));
 // router.get("/:postedBy", wrapAsync(bookController.booksByUser));
-const userBooksRouter = express.Router();
+const singleBookRouter = new express.Router();
+router.use("/:bookId", bookIdValidator(), validationResult, singleBookRouter);
+singleBookRouter.get("/", bookController.getSingleBook);
+
+const userBooksRouter = new express.Router();
 router.use("/:postedBy",userBookValidator(),validationResult,userBooksRouter);
 
 userBooksRouter.get("/", bookController.booksByUser);

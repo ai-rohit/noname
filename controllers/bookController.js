@@ -30,13 +30,18 @@ module.exports = {
         })
     },
     booksByUser: async(req,res,next)=>{
-        // console.log(req.params.postedBy)
-        // console.log(req.url);
-        // const booksByUser = await Book.find({postedBy:req.params.postedBy});
         return res.status(200).json({
             status:"success",
             data:{
                 books:req.userBooks
+            }
+        })
+    },
+    getSingleBook: async(req,res,next)=>{
+        return res.status(200).send({
+            status:"success",
+            data:{
+                book:req.book
             }
         })
     }

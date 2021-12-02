@@ -13,6 +13,13 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    trackStock:{
+        type:Boolean,
+        default: false
+    },
+    inStock:{
+        type:Number,
+    },
     // images:[
     //     {
     //         id:{
