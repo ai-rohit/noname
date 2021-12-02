@@ -2,7 +2,9 @@ const {Book} = require("../models");
 
 module.exports = {
     getBooks : async(req, res, next)=>{
-        const book = await Book.find().populate("postedBy", {password:0});
+        const query = await Book.buildFilterQuery(req);
+        console.log(query);
+        const book = await Book.find(query).populate("postedBy", {password:0});
         return res.send({
             status:"success",
             data:{

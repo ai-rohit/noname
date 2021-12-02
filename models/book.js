@@ -42,6 +42,26 @@ const bookSchema = new mongoose.Schema({
     },
 });
 
+bookSchema.statics.buildFilterQuery = function(req){
+    let query = {};
+    if(req.query.title){
+        query.title= {$regex:new RegExp(req.query.title)};
+    }
+    if(req.query.minPrice && !req.query.maxPrice){
+        query.price = {$gte: req.query.minPrice}
+    }
+    if(req.query.maxPrice && !req.query.minPrice){
+        query.price = {$lte:req.query.maxPrice}
+    }
+    if(req.query.minPrice && req.query.maxPrice){
+        query.price = {
+            $gte:req.query.minPrice,
+            $lte:req.query.maxPrice
+        }
+    }
+    return {$and:[query]};
+}
+
 const Book = mongoose.model("Book", bookSchema);
 
 module.exports = Book;
