@@ -5,6 +5,7 @@ const loggedInUser = require("../middlewares/loggedInUser");
 
 const router = express.Router();
 
-router.get("/all",loggedInUser,wrapAsync(bookController.getAllBooks));
+router.get("/",loggedInUser,wrapAsync(bookController.getBooks));
+router.post("/", loggedInUser ,wrapAsync(bookController.postBooks));
 
 module.exports = router;

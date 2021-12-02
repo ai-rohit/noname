@@ -18,6 +18,7 @@ async function loggedInUser(req,res,next){
     if(freshUser.changedPassword(decoded.iat)){
         return next(new CustomError('User recently changed the password, Please login to continue',401))
     }
+    req.user = freshUser;
     return next();
 }
 module.exports = loggedInUser;
