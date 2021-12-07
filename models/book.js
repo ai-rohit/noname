@@ -39,6 +39,11 @@ const bookSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    status:{
+        type:String,
+        enum:["published","unpublished","archived"],
+        default:"published"
+    },
     postedBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"User"

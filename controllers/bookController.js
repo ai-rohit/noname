@@ -71,5 +71,21 @@ module.exports = {
                 book:editedResult
             }
         })
+    },
+    deleteBook: async(req, res, next)=>{
+        await req.book.remove();
+        return res.status(200).json({
+            status:"success",
+            message:"Book deleted successfully"
+        });
+    },
+    myBooks: async(req, res, next)=>{
+        const myBooks = await Book.find({postedBy: req.user._id}).populate("postedBy", {password:0});
+        return res.status(200).json({
+            status:"success",
+            data:{
+                books:myBooks
+            }
+        });
     }
 }
