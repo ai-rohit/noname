@@ -50,5 +50,22 @@ module.exports = {
     },
     googleLogin : async(req, res, next)=>{
         
+    },
+    changePassword: async(req, res, next)=>{
+        // takes current pw, new pw, new pw confirm
+        const {currentPassword, newPassword} = req.body;
+        const isMatch = await req.user.comparePassword(currentPassword);
+        if(isMatch){
+            req.user.password = bcrypt.hashSync(newPassword, 10);
+            req.user.passwordChangedAt = Date.now();
+            await req.user.save();
+            return res.status(200).send({
+                status:"success",
+                data:{
+                    password:"Password changed successfully"
+                }
+            })
+        }
+        next(new CustomError("Password doesn't match", 400));
     }
 }

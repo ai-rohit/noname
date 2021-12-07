@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -18,10 +19,17 @@ const userSchema = new mongoose.Schema({
     },
     passwordChangedAt: Date
 });
-
+userSchema.methods.comparePassword = async function(candidatePassword){
+    console.log(this.password, candidatePassword);
+    console.log(bcrypt.compareSync(candidatePassword, this.password));
+    if(bcrypt.compareSync(candidatePassword, this.password)){
+       return true; 
+    }
+    return false;
+}
 userSchema.methods.changedPassword = function(timestamp){
     if(this.passwordChangedAt){
-        let formattedTimeStamp = parseInt(this.passwordChanged.getTime()/1000,10);
+        let formattedTimeStamp = parseInt(this.passwordChangedAt.getTime()/1000,10);
         return formattedTimeStamp > timestamp;
     }    
     return false;
