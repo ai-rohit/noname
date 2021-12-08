@@ -44,5 +44,14 @@ module.exports = {
             session.endSession();
             next(new CustomError(ex.message, 500))
         }
+    },
+    getMyOrders: async(req, res, next)=>{
+        const orders = await Order.find({user:req.user._id});
+        return res.status(200).json({
+            status:"success",
+            data:{
+                orders
+            }
+        })
     }
 }
