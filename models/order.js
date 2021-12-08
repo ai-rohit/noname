@@ -19,14 +19,19 @@ const orderSchema = new mongoose.Schema({
     status:{
         type:String,
         required:true,
-        enum:["pending","accepted","rejected","delivered"]
+        enum:["pending","accepted","rejected","delivered"],
+        default:"pending"
+    },
+    total:{
+        type:Number,
+        required:true
     }
     // orderNum:{
     //     type:String,
     //     required:"true",
     // }
     
-});
+},{timestamps:true});
 
 const Order = mongoose.model("Order",orderSchema);
 module.exports = Order;
