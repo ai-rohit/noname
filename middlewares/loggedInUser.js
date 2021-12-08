@@ -10,7 +10,6 @@ async function loggedInUser(req,res,next){
         return next(new CustomError("401 Not logged in", 401))
     }
     const decoded = jwt.verifyJWT(token,process.env.JWT_KEY);
-    console.log(decoded);
     const freshUser = await User.findById(decoded.userId);
     if(!freshUser){
         return next(new CustomError("The user no longer exist",401))

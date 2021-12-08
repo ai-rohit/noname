@@ -48,6 +48,10 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
+    deliveryAvailable:{
+        type:Boolean,
+        default: false
+    },
     dateAdded:{
         type: Date,
         required: true
