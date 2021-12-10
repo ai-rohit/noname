@@ -31,6 +31,9 @@ const bookSchema = new mongoose.Schema({
     //         }
     //     }
     // ],
+    images:{
+        type:Array,
+    },
     condition:{
         type: String,
         required: true
