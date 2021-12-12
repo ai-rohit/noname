@@ -1,11 +1,13 @@
-const User = require('../models/user');
-const Book = require('../models/book');
-const Order = require("../models/order");
-const OrderDetail = require("../models/orderDetail");
+const User = require('./user');
+const Book = require('./book');
+const Order = require("./order");
+const OrderDetail = require("./orderDetail");
+const Notification = require("./notification")
 
 module.exports = {
     User,
     Book,
     Order,
-    OrderDetail
+    OrderDetail,
+    Notification
 }
