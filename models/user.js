@@ -10,12 +10,24 @@ const userSchema = new mongoose.Schema({
         type:"String",
         required: true
     },
+    phone:{
+        type:Number,
+    },
     password: {
         type:"String",
     },
     isVerified: {
         type:"Boolean",
         default: false
+    },
+    role:{
+        type:String,
+        required:true,
+        default:"user"
+    },
+    userType:{
+        type:String,
+        enum:["local","google","facebook"]
     },
     passwordChangedAt: Date
 });

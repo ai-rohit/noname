@@ -67,5 +67,8 @@ module.exports = {
             })
         }
         next(new CustomError("Password doesn't match", 400));
+    },
+    refreshAccessToken: async(req, res, next)=>{
+        res.send("Will work later");
     }
 }

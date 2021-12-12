@@ -1,5 +1,6 @@
 const express  = require("express");
 const app = express();
+
 require("./config/db");
 require("dotenv").config();
 const CustomError = require("./helpers/customErrorHandler");
