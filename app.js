@@ -1,8 +1,8 @@
 const express  = require("express");
 const app = express();
 
-require("./config/db");
 require("dotenv").config();
+require("./config/db");
 const CustomError = require("./helpers/customErrorHandler");
 app.use(express.json());
 
@@ -20,7 +20,9 @@ app.use(require("./middlewares/errorhandler"));
 
 const port = process.env.PORT || 8000;
  
-app.listen(port, (error)=>{
+const server = app.listen(port, (error)=>{
     if(error) console.log(error)
     console.log("listening to port", port);
 });
+
+module.exports = server;

@@ -7,7 +7,7 @@ const {userBookValidator, bookIdValidator} = require("../validations/booksvalida
 
 const router = express.Router();
 
-router.get("/",loggedInUser,wrapAsync(bookController.getBooks));
+router.get("/",wrapAsync(bookController.getBooks));
 router.get("/my-books", loggedInUser, wrapAsync(bookController.myBooks));
 router.post("/", loggedInUser ,wrapAsync(bookController.postBooks));
 
