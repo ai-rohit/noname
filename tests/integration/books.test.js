@@ -26,6 +26,22 @@ describe("/api/categories", ()=>{
         })
     });
 
+    describe("POST /", ()=>{
+        it("should store the category in database and return proper response", async()=>{
+            const res = await request(server).post("/api/categories").send({
+                name:"cat 1",
+                description:"desc 1"
+            });
+            
+            const category = await Category.find();
+            
+            expect(res.status).toBe(200);
+            expect(res.body.data.category).toHaveProperty("name", "cat 1");
+            expect(res.body.data.category).toHaveProperty("description");
+            expect(category).not.toBeNull();
+        })
+    })
+
     describe("GET /:id", ()=>{
         it("should return category with passed id", async ()=>{
             const category = new Category({name:"cat1", description:"desc1"});
