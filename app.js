@@ -16,7 +16,7 @@ app.use("/api/notifications", require("./routes/notification"));
 app.use("*", async(req, res, next) => {
     next(new CustomError(`${req.originalUrl} not found`, 404));
 });
-
+require("./cron-jobs/test-cron")
 app.use(require("./middlewares/errorhandler"));
 
 const port = process.env.PORT || 8000;
