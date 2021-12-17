@@ -1,4 +1,4 @@
-const Notification = require("../models/notification");
+const {Notification} = require("../models");
 
 module.exports = {
     getNotificationForUser: async (req, res, next)=>{
@@ -9,5 +9,15 @@ module.exports = {
                 notifications
             }
         });
+    },
+    createNotification: async(req, res, next)=>{
+        const newNotification = new Notification(req.body);
+        await newNotification.save();
+        return res.status(200).json({
+            status:"success",
+            data:{
+                notification: newNotification
+            }
+        })
     }
 }
