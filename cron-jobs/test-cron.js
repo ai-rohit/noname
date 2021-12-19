@@ -13,5 +13,5 @@ module.exports = cron.schedule("*/2 * * * * *", async ()=>{
             console.log("failed")
         }
     }
-    console.log("no notification to remove")
+    // console.log("no notification to remove")
 })
