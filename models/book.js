@@ -63,7 +63,7 @@ const bookSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-});
+}, {timestamps:true});
 
 bookSchema.statics.buildFilterQuery = function(req){
     let query = {};

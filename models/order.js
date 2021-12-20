@@ -22,16 +22,30 @@ const orderSchema = new mongoose.Schema({
         enum:["pending","accepted","rejected","delivered"],
         default:"pending"
     },
-    total:{
-        type:Number,
-        required:true
-    }
+    // total:{
+    //     type:Number,
+    //     required:true
+    // }
     // orderNum:{
     //     type:String,
     //     required:"true",
     // }
     
-},{timestamps:true});
+},{timestamps:true,
+toJSON: { virtuals: true },
+toObject: { virtuals: true }});
+
+orderSchema.virtual("items",{
+    ref:"OrderDetail",
+    localField:"_id",
+    foreignField:"order"
+})
+
+orderSchema.virtual("total").get(function(){
+    return this.orderDetails.reduce((total, orderDetail) => {
+        return total + orderDetail.lineTotal;
+    }, 0);
+})
 
 const Order = mongoose.model("Order",orderSchema);
 module.exports = Order;

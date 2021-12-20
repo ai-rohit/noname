@@ -17,7 +17,7 @@ module.exports = {
         //     id:<id>,
         //     quantity:num,
         // }
-        const session = await Order.startSession();
+        // const session = await Order.startSession();
         const order = new Order({
             deliveryLocation:{
                 type:"Point",
@@ -37,16 +37,16 @@ module.exports = {
                 const orderDetail = new OrderDetail(newOrder);
                 await orderDetail.save();
             }
-            await session.commitTransaction();
-            session.endSession();
+            // await session.commitTransaction();
+            // session.endSession();
         }catch(ex){
-            await session.abortTransaction();
-            session.endSession();
+            // await session.abortTransaction();
+            // session.endSession();
             next(new CustomError(ex.message, 500))
         }
     },
     getMyOrders: async(req, res, next)=>{
-        const orders = await Order.find({user:req.user._id});
+        const orders = await Order.find({user:req.user._id}).populate("items");
         return res.status(200).json({
             status:"success",
             data:{

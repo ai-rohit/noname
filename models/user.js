@@ -23,14 +23,37 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true,
-        default:"user"
+        default:"user",
+        enum:["user","admin"]
     },
     userType:{
         type:String,
         enum:["local","google","facebook"]
     },
+    resetToken:{
+        token:{
+            type:Number,
+            maxlength:4,
+            minlength:4
+        },
+        expires:{
+            type:Date,
+            default: Date.now() + 3600000
+        }
+    },
+    verificationToken:{
+        token:{
+            type:Number,
+            maxlength:4,
+            minlength:4
+        },
+        expires:{
+            type:Date,
+            default: Date.now() + 3600000
+        }
+    },
     passwordChangedAt: Date
-});
+}, {timestamps: true});
 userSchema.methods.comparePassword = async function(candidatePassword){
     console.log(this.password, candidatePassword);
     console.log(bcrypt.compareSync(candidatePassword, this.password));
