@@ -4,7 +4,7 @@ const {jwt, CustomError} = require("../helpers");
 
 module.exports = {
     register : async(req,res,next)=>{
-            const {firstname, lastname, phone, address email, password} = req.body;
+            const {firstname, lastname, phone, address, email, password} = req.body;
             const user = await User.findOne({email});
             if(user){
                 return next(new CustomError("User already exists",400));
