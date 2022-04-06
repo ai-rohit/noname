@@ -4,14 +4,17 @@ const {jwt, CustomError} = require("../helpers");
 
 module.exports = {
     register : async(req,res,next)=>{
-            const {name, email, password} = req.body;
+            const {firstname, lastname, phone, address email, password} = req.body;
             const user = await User.findOne({email});
             if(user){
                 return next(new CustomError("User already exists",400));
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             User.create({
-                name,
+                firstname,
+                lastname,
+                phone,
+                address,
                 email,
                 password: hashedPassword
             }, (error, result)=>{
