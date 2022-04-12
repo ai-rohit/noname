@@ -1,5 +1,5 @@
 const {param, body, query} = require("express-validator");
-const {User, Book} =  require("../models");
+const {User, Product} =  require("../models");
 
 module.exports = {
 
@@ -53,12 +53,12 @@ module.exports = {
     },
     bookIdValidator: function(){
         return [
-            param("bookId").custom(async(value, {req})=>{
-                const book = await Book.findById(value);
-                if(!book){
-                    return Promise.reject("Book with given id doesnt exist");
+            param("id").custom(async(value, {req})=>{
+                const product = await Product.findById(value);
+                if(!product){
+                    return Promise.reject("Product with given id doesnt exist");
                 }
-                req.book = book;
+                req.product = product;
                 return Promise.resolve();
             })
         ]

@@ -7,16 +7,16 @@ const {userBookValidator, bookIdValidator} = require("../validations/booksvalida
 
 const router = express.Router();
 
-router.get("/",wrapAsync(bookController.getBooks));
+router.get("/",wrapAsync(bookController.getProducts));
 router.get("/my-books", loggedInUser, wrapAsync(bookController.myBooks));
-router.post("/", loggedInUser ,wrapAsync(bookController.postBooks));
+router.post("/", wrapAsync(bookController.postProducts));
 
 //routes for single books
 const singleBookRouter = new express.Router();
-router.use("/:bookId", bookIdValidator(), validationResult, singleBookRouter);
-singleBookRouter.get("/", bookController.getSingleBook);
-singleBookRouter.put("/", wrapAsync(bookController.editBook));
-singleBookRouter.delete("/", wrapAsync(bookController.deleteBook));
+router.use("/:id", bookIdValidator(), validationResult, singleBookRouter);
+singleBookRouter.get("/", bookController.getSingleProduct);
+singleBookRouter.put("/", wrapAsync(bookController.editProduct));
+singleBookRouter.delete("/", wrapAsync(bookController.deleteProduct));
 
 //routes for books by a user
 const userBooksRouter = new express.Router();

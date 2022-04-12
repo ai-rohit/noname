@@ -1,31 +1,38 @@
-const {Book} = require("../models");
+const {Product, Material} = require("../models");
 
 module.exports = {
-    getBooks : async(req, res, next)=>{
-        const query = await Book.buildFilterQuery(req);
+    getProducts : async(req, res, next)=>{
+        const query = await Product.buildFilterQuery(req);
         console.log(query);
-        const book = await Book.find(query).populate("postedBy", {password:0});
+        const product = await Product.find(query).populate("materials");
         return res.send({
             status:"success",
             data:{
-                book
+                product
             }
         })
     },
-    postBooks: async(req,res,next)=>{
-        const {title, description, price, condition} = req.body;
-        const newBook = await Book.create({
+    postProducts: async(req,res,next)=>{
+        const {title, description, materials, extraCharge, category} = req.body;
+        let materialCharge = 0;
+
+        for(let i = 0; i < materials.length; i++){
+            let material = await Material.findById(materials[i].material);
+            materialCharge = materialCharge + (material.unitPrice * materials[i].usedQuantity)
+        }
+        let totalPrice = materialCharge + parseInt(extraCharge);
+        const newProduct = await Product.create({
             title,
             description,
-            price,
-            condition,
-            postedBy: req.user._id,
-            dateAdded: new Date()
+            materials,
+            category,
+            totalPrice,
+            extraCharge
         });
         return res.status(200).send({
             status:"success",
             data:{
-                book:newBook
+                product: newProduct
             }
         })
     },
@@ -37,46 +44,40 @@ module.exports = {
             }
         })
     },
-    getSingleBook: async(req,res,next)=>{
+    getSingleProduct: async(req,res,next)=>{
         return res.status(200).send({
             status:"success",
             data:{
-                book:req.book
+                product:req.product
             }
         })
     },
-    editBook: async(req, res, next)=>{
+    editProduct: async(req, res, next)=>{
         if(req.body.title){
-            req.book.title = req.body.title
+            req.product.title = req.body.title
         }
         if(req.body.description){
-            req.book.description = req.body.description
+            req.product.description = req.body.description
         }
         if(req.body.trackStock){
-            req.book.trackStock = req.body.trackStock
+            req.product.trackStock = req.body.trackStock
         }
         if(req.body.inStock){
-            req.book.inStock = req.body.inStock
+            req.product.inStock = req.body.inStock
         }
-        if(req.body.isSold){
-            req.book.isSold = req.body.isSold
-        }
-        if(req.body.status){
-            req.book.status = req.body.status
-        }
-        const editedResult = await req.book.save();
+        const editedResult = await req.product.save();
         return res.status(200).json({
             status:"success",
             data:{
-                book:editedResult
+                product: editedResult
             }
         })
     },
-    deleteBook: async(req, res, next)=>{
-        await req.book.remove();
+    deleteProduct: async(req, res, next)=>{
+        await req.product.remove();
         return res.status(200).json({
             status:"success",
-            message:"Book deleted successfully"
+            message:"Product deleted successfully"
         });
     },
     myBooks: async(req, res, next)=>{

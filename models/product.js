@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bookSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
@@ -10,10 +10,27 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     category:{
-        type:[mongoose.Schema.Types.ObjectId],
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Category"
     },
-    price:{
+    materials:{
+        type:[{
+            material:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Material"
+            },
+            usedQuantity:{
+                type: Number,
+                required: true
+            }
+        }],
+        required: true
+    },
+    extraCharge:{
+        type: Number,
+        required: true
+    },
+    totalPrice:{
         type: Number,
         required: true
     },
@@ -35,37 +52,10 @@ const bookSchema = new mongoose.Schema({
     //         }
     //     }
     // ],
-    images:{
-        type:Array,
-    },
-    condition:{
-        type: String,
-        required: true
-    },
-    isSold:{
-        type: Boolean,
-        default: false
-    },
-    status:{
-        type:String,
-        enum:["published","unpublished","archived"],
-        default:"published"
-    },
-    postedBy:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"User"
-    },
-    deliveryAvailable:{
-        type:Boolean,
-        default: false
-    },
-    dateAdded:{
-        type: Date,
-        required: true
-    },
+    image: String,
 }, {timestamps:true});
 
-bookSchema.statics.buildFilterQuery = function(req){
+productSchema.statics.buildFilterQuery = function(req){
     let query = {};
     if(req.query.title){
         query.title= {$regex:new RegExp(req.query.title)};
@@ -85,6 +75,6 @@ bookSchema.statics.buildFilterQuery = function(req){
     return {$and:[query]};
 }
 
-const Book = mongoose.model("Book", bookSchema);
+const Product = mongoose.model("Product", productSchema);
 
-module.exports = Book;
+module.exports = Product;
