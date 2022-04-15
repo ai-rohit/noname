@@ -5,12 +5,7 @@ module.exports = {
         const query = await Product.buildFilterQuery(req);
         console.log(query);
         const product = await Product.find(query).populate("materials");
-        return res.send({
-            status:"success",
-            data:{
-                product
-            }
-        })
+        return res.send(product);
     },
     postProducts: async(req,res,next)=>{
         const {title, description, materials, extraCharge, category} = req.body;
@@ -29,28 +24,17 @@ module.exports = {
             totalPrice,
             extraCharge
         });
-        return res.status(200).send({
-            status:"success",
-            data:{
-                product: newProduct
-            }
-        })
+        return res.status(200).send(
+                newProduct
+        )
     },
     booksByUser: async(req,res,next)=>{
-        return res.status(200).json({
-            status:"success",
-            data:{
-                books:req.userBooks
-            }
-        })
+        return res.status(200).json(req.userBooks);
     },
     getSingleProduct: async(req,res,next)=>{
-        return res.status(200).send({
-            status:"success",
-            data:{
-                product:req.product
-            }
-        })
+        return res.status(200).send(   
+            req.product
+        )
     },
     editProduct: async(req, res, next)=>{
         if(req.body.title){
@@ -66,12 +50,7 @@ module.exports = {
             req.product.inStock = req.body.inStock
         }
         const editedResult = await req.product.save();
-        return res.status(200).json({
-            status:"success",
-            data:{
-                product: editedResult
-            }
-        })
+        return res.status(200).json(editedResult)
     },
     deleteProduct: async(req, res, next)=>{
         await req.product.remove();
