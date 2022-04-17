@@ -50,6 +50,9 @@ module.exports = {
         if(req.body.inStock){
             req.product.inStock = req.body.inStock
         }
+        if(req.body.size){
+            req.product.size = req.body.size
+        }
         const editedResult = await req.product.save();
         return res.status(200).json(editedResult)
     },
