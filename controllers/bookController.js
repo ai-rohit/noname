@@ -8,7 +8,7 @@ module.exports = {
         return res.send(product);
     },
     postProducts: async(req,res,next)=>{
-        const {title, description, materials, extraCharge, category} = req.body;
+        const {title, description, materials, extraCharge, category, size} = req.body;
         let materialCharge = 0;
 
         for(let i = 0; i < materials.length; i++){
@@ -22,7 +22,8 @@ module.exports = {
             materials,
             category,
             totalPrice,
-            extraCharge
+            extraCharge,
+            size
         });
         return res.status(200).send(
                 newProduct
