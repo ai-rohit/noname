@@ -1,3 +1,4 @@
+const { CustomError } = require("../helpers");
 const {Product, Material} = require("../models");
 
 module.exports = {
@@ -64,12 +65,20 @@ module.exports = {
         });
     },
     myBooks: async(req, res, next)=>{
-        const myBooks = await Book.find({postedBy: req.user._id}).populate("postedBy", {password:0});
+        const myBooks = await Product.find({postedBy: req.user._id}).populate("postedBy", {password:0});
         return res.status(200).json({
             status:"success",
             data:{
                 books:myBooks
             }
         });
+    },
+    updateImage: async(req, res, next)=>{
+        if(!req.file){
+            return next(new CustomError("Image is required", 400))
+        }
+        req.product.image = req.file.path;
+        await req.product.save();
+        return res.status(200).json(req.product)
     }
 }

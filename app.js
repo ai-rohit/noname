@@ -1,5 +1,7 @@
 const express  = require("express");
 const app = express();
+const fs = require('fs');
+const path = require("path");
 
 require("dotenv").config();
 require("./config/db");
@@ -13,6 +15,15 @@ app.use("/api/orders", require("./routes/order"));
 app.use("/api/categories", require("./routes/category"));
 app.use("/api/notifications", require("./routes/notification"));
 app.use("/api/materials", require("./routes/material"));
+
+const prodImagePath = path.join(__dirname + "/uploads");
+
+if(!fs.existsSync(prodImagePath)){
+  fs.mkdirSync(prodImagePath);
+  console.log("created directory ", prodImagePath, " for images")
+}
+
+app.use("/uploads", express.static(prodImagePath))
 
 app.use("*", async(req, res, next) => {
     next(new CustomError(`${req.originalUrl} not found`, 404));

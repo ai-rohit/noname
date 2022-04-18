@@ -12,22 +12,19 @@ module.exports = {
         })
     },
     createOrder:async(req,res,next)=>{
-        const {deliveryLocation, products} = req.body;
+        const {deliveryLocation, products, total} = req.body;
         // produt={
         //     id:<id>,
         //     quantity:num,
         // }
         // const session = await Order.startSession();
-        const order = new Order({
-            deliveryLocation:{
-                type:"Point",
-                coordinates:[83.98535,28.22571]
-            },
-            user:req.user._id,
-            total:1000
-        });
-        await order.save();
         try{
+            const order = new Order({
+                deliveryLocation:deliveryLocation,
+                user:req.user._id,
+                total:total
+            });
+            await order.save();
             for(let i = 0; i<products.length; i++){
                 const newOrder = {
                     order: order._id,
@@ -37,6 +34,7 @@ module.exports = {
                 const orderDetail = new OrderDetail(newOrder);
                 await orderDetail.save();
             }
+            return res.status(200).json(order);
             // await session.commitTransaction();
             // session.endSession();
         }catch(ex){

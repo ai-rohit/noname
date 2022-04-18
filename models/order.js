@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { string } = require("sharp/lib/is");
 
 const orderSchema = new mongoose.Schema({
     user:{
@@ -6,15 +7,8 @@ const orderSchema = new mongoose.Schema({
         ref:"User"
     },
     deliveryLocation:{
-        type:{
-            type:String,
-            default:"Point"
-        },
-        coordinates:{
-            type:[Number],
-            index:"2dsphere"
-        }
-
+       type: String,
+       required: true
     },
     status:{
         type:String,
@@ -22,10 +16,21 @@ const orderSchema = new mongoose.Schema({
         enum:["pending","accepted","rejected","delivered"],
         default:"pending"
     },
-    // total:{
-    //     type:Number,
-    //     required:true
-    // }
+    paymentStatus:{
+        type: String,
+        required: true,
+        enum: ["paid", "unpaid"],
+        default: "unpaid"
+    },
+    paymentType:{
+        type: string,
+        required: true,
+        default: "cash"
+    },
+    total:{
+        type:Number,
+        required:true
+    }
     // orderNum:{
     //     type:String,
     //     required:"true",
@@ -39,12 +44,6 @@ orderSchema.virtual("items",{
     ref:"OrderDetail",
     localField:"_id",
     foreignField:"order"
-})
-
-orderSchema.virtual("total").get(function(){
-    return this.orderDetails.reduce((total, orderDetail) => {
-        return total + orderDetail.lineTotal;
-    }, 0);
 })
 
 const Order = mongoose.model("Order",orderSchema);
