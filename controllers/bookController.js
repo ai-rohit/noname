@@ -9,18 +9,17 @@ module.exports = {
         return res.send(product);
     },
     postProducts: async(req,res,next)=>{
-        const {title, description, materials, extraCharge, category, size} = req.body;
-        let materialCharge = 0;
+        const {title, description, materialUsed, usedWeight, extraCharge, category, size} = req.body;
+        let materialCharge = 0;    
+        let material = await Material.findById(materialUsed);
+        materialCharge = materialCharge + (material.unitPrice * usedWeight)
 
-        for(let i = 0; i < materials.length; i++){
-            let material = await Material.findById(materials[i].material);
-            materialCharge = materialCharge + (material.unitPrice * materials[i].usedQuantity)
-        }
         let totalPrice = materialCharge + parseInt(extraCharge);
         const newProduct = await Product.create({
             title,
             description,
-            materials,
+            materialUsed,
+            usedWeight,
             category,
             totalPrice,
             extraCharge,

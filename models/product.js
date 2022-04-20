@@ -16,18 +16,13 @@ const productSchema = new mongoose.Schema({
     size:{
         type: String
     },
-    materials:{
-        type:[{
-            material:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref:"Material"
-            },
-            usedQuantity:{
-                type: Number,
-                required: true
-            }
-        }],
+    materialUsed:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Material",
         required: true
+    },
+    usedWeight:{
+        type: Number
     },
     extraCharge:{
         type: Number,
