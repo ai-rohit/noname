@@ -5,23 +5,28 @@ module.exports = {
     getProducts : async(req, res, next)=>{
         const query = await Product.buildFilterQuery(req);
         console.log(query);
-        const product = await Product.find(query).populate("materials");
-        return res.send(product);
+        let product = await Product.find(query).populate("materialUsed");
+        product = product.map(async (item)=>{
+            return {
+                ...item._doc,
+                totalPrice: await item.totalPrice()
+            }
+        })
+        return res.send(await Promise.all(product));
     },
     postProducts: async(req,res,next)=>{
         const {title, description, materialUsed, usedWeight, extraCharge, category, size} = req.body;
-        let materialCharge = 0;    
-        let material = await Material.findById(materialUsed);
-        materialCharge = materialCharge + (material.unitPrice * usedWeight)
+        // let materialCharge = 0;    
+        // let material = await Material.findById(materialUsed);
+        // materialCharge = materialCharge + (material.unitPrice * usedWeight)
 
-        let totalPrice = materialCharge + parseInt(extraCharge);
+        // let totalPrice = materialCharge + parseInt(extraCharge);
         const newProduct = await Product.create({
             title,
             description,
             materialUsed,
             usedWeight,
             category,
-            totalPrice,
             extraCharge,
             size
         });
@@ -33,8 +38,12 @@ module.exports = {
         return res.status(200).json(req.userBooks);
     },
     getSingleProduct: async(req,res,next)=>{
+        console.log(await req.product.totalPrice())
         return res.status(200).send(   
-            req.product
+            {
+                ...req.product._doc,
+                totalPrice: await req.product.totalPrice()
+            }
         )
     },
     editProduct: async(req, res, next)=>{

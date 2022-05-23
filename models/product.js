@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Material = require("./material");
 
 const productSchema = new mongoose.Schema({
     title:{
@@ -28,10 +29,6 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    totalPrice:{
-        type: Number,
-        required: true
-    },
     trackStock:{
         type:Boolean,
         default: false
@@ -51,7 +48,53 @@ const productSchema = new mongoose.Schema({
     //     }
     // ],
     image: String,
-}, {timestamps:true});
+}, {timestamps:true, toJSON:{virtuals: true}});
+
+// productSchema.virtual("totalPrice").set(async function(){
+//     const material = await Material.findById(this.materialUsed);
+//     let priceWithMaterial = this.usedWeight * material.unitPrice;
+//     let totalCharge = priceWithMaterial + this.extraCharge;
+//     this.totalPrice = totalCharge;
+// }).get(function(){
+//     // return Material.findById(this.materialUsed).then((material)=>{
+//         //     if(material){
+//             //          priceWithMaterial = this.usedWeight * parseInt(material.unitPrice);
+//             //     }
+//             //         let totalCharge = priceWithMaterial + this.extraCharge
+//             //         return totalCharge;
+//             // }).catch(err=>{
+//                 //     console.log(err)
+//                 // });
+                
+//     // const price = Material.findById(this.materialUsed, (err, material)=>{
+//     //     let priceWithMaterial = 0;
+//     //     if(err){
+//     //         console.log(err)
+//     //     }
+//     //     if(material){
+//     //         priceWithMaterial = this.usedWeight * parseInt(material.unitPrice);
+//     //    }
+//     //        let totalCharge = priceWithMaterial + this.extraCharge
+//     //        return totalCharge;
+//     // });
+//     // return price;
+//     return this.totalPrice
+// })
+
+// productSchema.methods.getTotalCharge = function(){
+//     const material = await Material.findById(this.materialUsed);
+//     let priceWithMaterial = this.usedWeight * material.unitPrice;
+//     let totalCharge = priceWithMaterial + this.extraCharge;
+    
+    
+// }
+
+productSchema.method("totalPrice", async function(){
+    const material = await Material.findById(this.materialUsed);
+    let priceWithMaterial = this.usedWeight * material.unitPrice;
+    let totalCharge = priceWithMaterial + this.extraCharge;
+    return totalCharge
+})
 
 productSchema.statics.buildFilterQuery = function(req){
     let query = {};
