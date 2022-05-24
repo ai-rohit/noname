@@ -85,7 +85,7 @@ module.exports = {
         if(!req.file){
             return next(new CustomError("Image is required", 400))
         }
-        req.product.image = req.file.path;
+        req.product.image = req.file.path.replace("\\", "/");
         await req.product.save();
         return res.status(200).json(req.product)
     }

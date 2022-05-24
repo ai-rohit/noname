@@ -113,6 +113,9 @@ productSchema.statics.buildFilterQuery = function(req){
             $lte:req.query.maxPrice
         }
     }
+    if(req.query.category){
+        query.category = req.query.category
+    }
     return {$and:[query]};
 }
 

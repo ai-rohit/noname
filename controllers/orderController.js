@@ -3,13 +3,19 @@ const {Order, OrderDetail} = require("../models");
 
 module.exports = {
     getAllOrders :async (req,res,next)=>{
-        const orders = await Order.find();
-        return res.status(200).send({
-            status:"success",
-            data:{
-                orders
+        let orders = await Order.find();
+        console.log(orders)
+        orders = orders.map(async (item) => {
+            const productDetails = await OrderDetail.find({
+                order: item._id
+            }, ["-order"]).populate({path: "product", select: ["title", "materialUsed", "image", "size", "usedWeight", "extraCharge"], populate:"materialUsed"})
+            return {
+                ...item._doc,
+                productDetails
             }
         })
+
+        return res.status(200).send(await Promise.all(orders))
     },
     createOrder:async(req,res,next)=>{
         const {deliveryLocation, products, total, phoneNumber} = req.body;
@@ -20,6 +26,17 @@ module.exports = {
         // const session = await Order.startSession();
         
         /**
+         * {
+         *  "deliveryLocation":"Newroad",
+         *  "products": [
+         *      {
+         *          "id":"",
+         *          "quantity":2
+         *      }
+         *  ],
+         * "total":"",
+         * "phoneNumber":""
+         * }
          * [
          *  {
          *  id:

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const dbString = process.env.NODE_ENV=="test"?process.env.dbtest:process.env.db
+const dbString = "mongodb+srv://Jutsan:Jutsan2020@cluster0.9vra6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const db = mongoose.connect(dbString, {
     useNewUrlParser: true,
     useUnifiedTopology: true

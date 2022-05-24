@@ -13,10 +13,6 @@ const orderDetailSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    lineTotal:{
-        type: Number,
-        required: true
-    }
 },{timestamps: true});
 
 const OrderDetail = mongoose.model('OrderDetail', orderDetailSchema);
