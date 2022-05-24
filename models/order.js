@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 const { string } = require("sharp/lib/is");
 
 const orderSchema = new mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
-    },
+    // user:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"User"
+    // },
     deliveryLocation:{
        type: String,
        required: true
+    },
+    phoneNumber:{
+        type: Number,
+        required: true
     },
     status:{
         type:String,

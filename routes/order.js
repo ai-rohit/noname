@@ -7,6 +7,6 @@ const router = express.Router();
 router.get("/", wrapAsync(orderController.getAllOrders));
 router.get("/my-orders", loggedInUser, wrapAsync(orderController.getMyOrders));
 
-router.post("/", loggedInUser, wrapAsync(orderController.createOrder));
+router.post("/", wrapAsync(orderController.createOrder));
 
 module.exports = router;

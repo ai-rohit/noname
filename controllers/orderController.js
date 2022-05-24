@@ -12,16 +12,28 @@ module.exports = {
         })
     },
     createOrder:async(req,res,next)=>{
-        const {deliveryLocation, products, total} = req.body;
+        const {deliveryLocation, products, total, phoneNumber} = req.body;
         // produt={
         //     id:<id>,
         //     quantity:num,
         // }
         // const session = await Order.startSession();
+        
+        /**
+         * [
+         *  {
+         *  id:
+         *  quantity:
+         * },{
+         *  id:
+         *  quantity:
+         * }
+         * ]
+         */
         try{
             const order = new Order({
                 deliveryLocation:deliveryLocation,
-                user:req.user._id,
+                phoneNumber: phoneNumber,
                 total:total
             });
             await order.save();
