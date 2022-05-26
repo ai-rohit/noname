@@ -81,5 +81,34 @@ module.exports = {
                 orders
             }
         })
+    },
+    updateOrder: async(req, res, next)=>{
+        const orderId = req.params.id;
+        let order = await Order.findById(orderId);
+
+        if(!order){
+            return next(new CustomError("Order not found!", 404))
+        }
+
+        if(req.body.status){
+            if(["pending","accepted","rejected","delivering", "completed", "returned"].indexOf(req.body.status) <= -1){
+                return next(new CustomError(`Cannot accept provided status. Accepted status: ${["pending","accepted","rejected","delivering", "completed", "returned"]}`, 400))
+            }else{
+                order.status = req.body.status;
+            }
+        }
+
+        if(req.body.paymentStatus){
+            order.paymentStatus = req.body.paymentStatus;
+        }
+        if(req.body.deliveryLocation){
+            order.deliveryLocation = req.body.deliveryLocation;
+        }
+        if(req.body.phoneNumber){
+            order.phoneNumber = req.body.phoneNumber;
+        }
+
+        order = await order.save();
+        return res.status(200).json(order);
     }
 }

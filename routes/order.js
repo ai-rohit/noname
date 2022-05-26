@@ -8,5 +8,6 @@ router.get("/", wrapAsync(orderController.getAllOrders));
 router.get("/my-orders", loggedInUser, wrapAsync(orderController.getMyOrders));
 
 router.post("/", loggedInUser, wrapAsync(orderController.createOrder));
+router.put("/:id", loggedInUser, wrapAsync(orderController.updateOrder));
 
 module.exports = router;
