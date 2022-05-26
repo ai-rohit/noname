@@ -22,7 +22,7 @@ module.exports = {
 
         // let totalPrice = materialCharge + parseInt(extraCharge);
         const newProduct = await Product.create({
-            title,
+            title: title.toLowerCase(),
             description,
             materialUsed,
             usedWeight,

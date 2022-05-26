@@ -99,7 +99,7 @@ productSchema.method("totalPrice", async function(){
 productSchema.statics.buildFilterQuery = function(req){
     let query = {};
     if(req.query.title){
-        query.title= {$regex:new RegExp(req.query.title)};
+        query.title= {$regex:new RegExp(req.query.title.toLowerCase())};
     }
     if(req.query.minPrice && !req.query.maxPrice){
         query.price = {$gte: req.query.minPrice}
