@@ -50,6 +50,7 @@ module.exports = {
         try{
             const order = new Order({
                 deliveryLocation:deliveryLocation,
+                user:req.user._id,
                 phoneNumber: phoneNumber,
                 total:total
             });
